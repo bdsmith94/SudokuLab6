@@ -229,7 +229,7 @@ public class SudokuController implements Initializable {
 	private GridPane BuildSudokuGrid() {
 
 		Sudoku s = this.game.getSudoku();
-
+		
 		SudokuStyler ss = new SudokuStyler(s);
 		GridPane gridPaneSudoku = new GridPane();
 		gridPaneSudoku.setCenterShape(true);
@@ -323,6 +323,9 @@ public class SudokuController implements Initializable {
 							Cell CellFrom = (Cell) db.getContent(myFormat);
 
 							if (!s.isValidValue(CellTo.getiRow(), CellTo.getiCol(), CellFrom.getiCellValue())) {
+								//add mistakes
+								game.getSudoku().AddMistake();
+																
 								if (game.getShowHints()) {
 
 								}
@@ -337,6 +340,12 @@ public class SudokuController implements Initializable {
 							paneTarget.getChildren().add(iv);
 							System.out.println(CellFrom.getiCellValue());
 							success = true;
+							
+							//disables ability to drop cells if gameOver is true
+							if (s.getGameOver() == true) {
+								success = false;
+							}
+							
 						}
 						event.setDropCompleted(success);
 						event.consume();

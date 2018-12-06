@@ -49,6 +49,12 @@ public class Sudoku extends LatinSquare implements Serializable {
 	private HashMap<Integer, SudokuCell> cells = new HashMap<Integer, SudokuCell>();
 
 	private eGameDifficulty eGameDifficulty;
+	
+	private int iMistakes;
+	
+	private int numZeros;
+	
+	private boolean gameOver;
 
 	/**
 	 * Sudoku - No-arg private constructor should set the eGameDifficulty to EASY by
@@ -79,7 +85,9 @@ public class Sudoku extends LatinSquare implements Serializable {
 
 		this();
 		this.iSize = iSize;
-
+		this.iMistakes = 0;
+		this.gameOver = false;
+		
 		double SQRT = Math.sqrt(iSize);
 		if ((SQRT == Math.floor(SQRT)) && !Double.isInfinite(SQRT)) {
 			this.iSqrtSize = (int) SQRT;
@@ -953,5 +961,63 @@ public class Sudoku extends LatinSquare implements Serializable {
 
 		}
 
+		public int getiRow() {
+			return iRow;
+		}
+		public int getiCol() {
+			return iCol;
+		}
+	}
+	
+	// Lab 6 methods
+	
+	public int getiMistakes() {
+		return iMistakes;
+	}
+	
+	public void setiMistakes(int iMistakes) {
+		this.iMistakes = iMistakes;
+	}
+	
+	public boolean getGameOver() {
+		return gameOver;
+	}
+	
+	public void AddMistake() {
+		//enumerates the mistakes
+		this.iMistakes++;
+	}
+	
+	public void GameOver() {
+		//checks to see if the total mistakes are greater than or equal to the maximum mistakes
+		if (iMistakes >= eGameDifficulty.getMaxMistakes()) {
+			//sets gameOver to true, prints a fun message, and then in SudokuController, disables ability to drag/drop cells when gameOver is true
+			this.gameOver = true;
+			System.out.println("Game over. Try again?");
+		}
+	}
+	
+	public void CountZeros() {
+		//counts the number of zeros in the puzzle
+		for (int iRow = 0; iRow < iSize; iRow++) {
+			for (int iCol = 0; iCol < iSize; iCol++) {
+				Cell thisCell = new Cell(iRow, iCol);
+				if (thisCell.getiCellValue() == 0) {
+					this.numZeros++;
+				}
+			}
+		}
+	}
+	
+	public void FinishedOrNot() {
+		if (this.numZeros == 0) {
+			if (this.iMistakes == 0) {
+				System.out.println("Congratulations! You solved it!");
+				}
+		}
+		else {
+			System.out.println("There are mistakes in your puzzle.");
+			}
+		}
 	}
 }
