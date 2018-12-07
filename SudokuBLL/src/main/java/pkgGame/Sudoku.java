@@ -54,8 +54,6 @@ public class Sudoku extends LatinSquare implements Serializable {
 	
 	private int numZeros;
 	
-	private boolean gameOver;
-
 	/**
 	 * Sudoku - No-arg private constructor should set the eGameDifficulty to EASY by
 	 * default
@@ -86,8 +84,7 @@ public class Sudoku extends LatinSquare implements Serializable {
 		this();
 		this.iSize = iSize;
 		this.iMistakes = 0;
-		this.gameOver = false;
-		
+				
 		double SQRT = Math.sqrt(iSize);
 		if ((SQRT == Math.floor(SQRT)) && !Double.isInfinite(SQRT)) {
 			this.iSqrtSize = (int) SQRT;
@@ -975,26 +972,17 @@ public class Sudoku extends LatinSquare implements Serializable {
 		return iMistakes;
 	}
 	
-	public void setiMistakes(int iMistakes) {
+	public int getMaxMistakes() {
+		return eGameDifficulty.getMaxMistakes();
+	}
+	
+	public void setMistakes(int iMistakes) {
 		this.iMistakes = iMistakes;
 	}
-	
-	public boolean getGameOver() {
-		return gameOver;
-	}
-	
+		
 	public void AddMistake() {
 		//enumerates the mistakes
 		this.iMistakes++;
-	}
-	
-	public void GameOver() {
-		//checks to see if the total mistakes are greater than or equal to the maximum mistakes
-		if (iMistakes >= eGameDifficulty.getMaxMistakes()) {
-			//sets gameOver to true, prints a fun message, and then in SudokuController, disables ability to drag/drop cells when gameOver is true
-			this.gameOver = true;
-			System.out.println("Game over. Try again?");
-		}
 	}
 	
 	public void CountZeros() {
@@ -1009,15 +997,11 @@ public class Sudoku extends LatinSquare implements Serializable {
 		}
 	}
 	
-	public void FinishedOrNot() {
+	public boolean FinishedOrNot() {
 		if (this.numZeros == 0) {
-			if (this.iMistakes == 0) {
-				System.out.println("Congratulations! You solved it!");
-				}
-		}
-		else {
-			System.out.println("There are mistakes in your puzzle.");
+			if (this.iMistakes == 0)
+				return true;
 			}
-		}
+		return false;
 	}
 }

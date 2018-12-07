@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
+
 import app.Game;
 import app.helper.SudokuCell;
 import app.helper.SudokuStyler;
@@ -325,12 +327,28 @@ public class SudokuController implements Initializable {
 							if (!s.isValidValue(CellTo.getiRow(), CellTo.getiCol(), CellFrom.getiCellValue())) {
 								//add mistakes
 								game.getSudoku().AddMistake();
+								
+								if(s.getiMistakes() >= s.getMaxMistakes()) {
+									JOptionPane.showMessageDialog(null, "Game Over.");
+									CreateSudokuInstance();
+									BuildGrids();
 																
 								if (game.getShowHints()) {
 
 								}
-
+								}
+								}
+							
+							//Displays messages if the sudoku is or isn't fully completed
+							if(s.FinishedOrNot() == true) {
+								JOptionPane.showMessageDialog(null, "Congratulations! You have solved the puzzle!");
+								CreateSudokuInstance();
+								BuildGrids();
+								}
+							else {
+									JOptionPane.showMessageDialog(null, "There are mistakes in your puzzle.");
 							}
+							
 
 							//	This is the code that is actually taking the cell value from the drag-from 
 							//	cell and dropping a new Image into the dragged-to cell
@@ -341,10 +359,7 @@ public class SudokuController implements Initializable {
 							System.out.println(CellFrom.getiCellValue());
 							success = true;
 							
-							//disables ability to drop cells if gameOver is true
-							if (s.getGameOver() == true) {
-								success = false;
-							}
+							
 							
 						}
 						event.setDropCompleted(success);
