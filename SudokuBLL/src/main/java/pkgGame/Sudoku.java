@@ -997,6 +997,8 @@ public class Sudoku extends LatinSquare implements Serializable {
 		}
 	}
 	
+	//testestestestrsetrdf
+	
 	public boolean FinishedOrNot() {
 		if (this.numZeros == 0) {
 			if (this.iMistakes == 0)
